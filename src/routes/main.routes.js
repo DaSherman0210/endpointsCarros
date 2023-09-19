@@ -1,6 +1,6 @@
 import express from "express";
 import { obtenerJWT } from "../helper/JWT.js"
-import { endpoint1, endpoint10, endpoint11, endpoint12, endpoint13, endpoint14, endpoint15, endpoint16, endpoint17, endpoint18, endpoint2, endpoint3, endpoint4, endpoint5, endpoint6, endpoint7, endpoint8, endpoint9 } from "../controllers/main.controller.js";
+import { endpoint1, endpoint10, endpoint11, endpoint12, endpoint13, endpoint14, endpoint15, endpoint16, endpoint17, endpoint18, endpoint19, endpoint2, endpoint20, endpoint3, endpoint4, endpoint5, endpoint6, endpoint7, endpoint8, endpoint9 } from "../controllers/main.controller.js";
 
 const router = express.Router();
 
@@ -23,5 +23,8 @@ router.get("/endpoint15" , endpoint15);
 router.get("/endpoint16" , endpoint16);
 router.get("/endpoint17" , endpoint17);
 router.get("/endpoint18" , endpoint18);
+router.get("/endpoint19" , endpoint19);
+router.get("/endpoint20" , endpoint20);
+
 
 export default router;

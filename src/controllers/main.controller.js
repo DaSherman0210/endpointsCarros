@@ -390,24 +390,28 @@ const endpoint19 = async (req,res) =>{
         const data = await alquileres.aggregate([
             {
                 $lookup: {
-                    from: "clientes",
-                    localField: "cliente",
-                    foreignField: "_id",
-                    as: "clientes"
-                  }
+                  from: "clientes",
+                  localField: "cliente",
+                  foreignField: "_id",
+                  as: "cliente"
+                }
             },
             {
-                $project:{
-                    "fechaInicio": 1,
-                    "fechaFinal": 1,
-                    "precioTotal": 1,
-                    "cliente.nombre": 1,
-                    "cliente.dni": 1,
-                    "cliente.celular": 1,
-                    "cliente.email": 1,
-                    "cliente.direccion": 1
-                }
-            }
+              $unwind: "$cliente"
+            },
+            {
+              $project:{
+                  "_id": 0,
+                  "fechaInicio": 1,
+                  "fechaFinal": 1,
+                  "precioTotal": 1,
+                  "cliente.nombre": 1,
+                  "cliente.dni": 1,
+                  "cliente.celular": 1,
+                  "cliente.email": 1,
+                  "cliente.direccion": 1
+              }
+          }
         ]).toArray();
         res.json(data);
     } catch (error) {
@@ -415,4 +419,13 @@ const endpoint19 = async (req,res) =>{
     }
 }
 
-export { endpoint1, endpoint2, endpoint3, endpoint4, endpoint5, endpoint6, endpoint7, endpoint8, endpoint9, endpoint10, endpoint11, endpoint12, endpoint13, endpoint14, endpoint15, endpoint16, endpoint17, endpoint18}
+const endpoint20 = async (req,res) => {
+    try {
+        const data = await alquileres.find({fechaInicio: {$gt: "2023-07-05" , $lt: "2023-07-10"}}).toArray();
+        res.json(data)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export { endpoint1, endpoint2, endpoint3, endpoint4, endpoint5, endpoint6, endpoint7, endpoint8, endpoint9, endpoint10, endpoint11, endpoint12, endpoint13, endpoint14, endpoint15, endpoint16, endpoint17, endpoint18, endpoint19, endpoint20}
