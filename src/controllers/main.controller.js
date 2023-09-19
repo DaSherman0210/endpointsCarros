@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -79,43 +79,43 @@ const endpoint4 = async (req, res) => {
     try {
         const data = await alquileres.aggregate([
             {
-              $lookup: {
-                from: "clientes",
-                localField: "cliente",
-                foreignField: "_id",
-                as: "cliente"
-              }
+                $lookup: {
+                    from: "clientes",
+                    localField: "cliente",
+                    foreignField: "_id",
+                    as: "cliente"
+                }
             },
             {
-              $lookup: {
-                from: "automoviles",
-                localField: "auto",
-                foreignField: "_id",
-                as: "automovil"
-              }
+                $lookup: {
+                    from: "automoviles",
+                    localField: "auto",
+                    foreignField: "_id",
+                    as: "automovil"
+                }
             },
             {
-              $unwind: "$cliente"
+                $unwind: "$cliente"
             },
             {
-              $unwind: "$automovil"
+                $unwind: "$automovil"
             },
             {
-              $match: {
-                "estado": /Pendiente/i
-              }
+                $match: {
+                    "estado": /Pendiente/i
+                }
             },
             {
-              $project: {
-                "_id": 0,
-                "precioTotal": 1,
-                "cliente.nombre": 1,
-                "cliente.celular":1,
-                "cliente.email": 1,
-                "automovil.modelo": 1,
-                "automovil.marca": 1,
-                "automovil.año": 1
-              }
+                $project: {
+                    "_id": 0,
+                    "precioTotal": 1,
+                    "cliente.nombre": 1,
+                    "cliente.celular": 1,
+                    "cliente.email": 1,
+                    "automovil.modelo": 1,
+                    "automovil.marca": 1,
+                    "automovil.año": 1
+                }
             }
         ]).toArray();
         res.json(data)
@@ -124,22 +124,206 @@ const endpoint4 = async (req, res) => {
     }
 }
 
-const endpoint5 = async (req,res) =>{
+const endpoint5 = async (req, res) => {
     try {
-        const query = {_id: req.params.id}
-        const data = await alquileres.findById(query);
-
-        console.log(query);
-
-        if (!data) {
-            res.status(404).json({ error: 'El alquiler no fue encontrado' });
-            return;
-        }
-
+        const query = { _id: new ObjectId(req.params.id) }
+        const data = await alquileres.findOne(query);
         res.json(data)
     } catch (error) {
         console.log(error);
     }
 }
 
-export { endpoint1, endpoint2, endpoint3, endpoint4 , endpoint5}
+const endpoint6 = async (req, res) => {
+    try {
+        const query = { cargo: /Vendedor/i }
+        const data = await empleados.find(query).toArray();
+        res.json(data);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const endpoint7 = async (req, res) => {
+    try {
+        const data = await sucursal.aggregate([
+            {
+                $lookup: {
+                    from: "automoviles",
+                    localField: "autosDisponibles",
+                    foreignField: "_id",
+                    as: "carros"
+                }
+            },
+            {
+                $project: {
+                    "_id": 0,
+                    "ciudad": 1,
+                    "pais": 1,
+                    "direccion": 1,
+                    "totalCarro": { $size: "$carros" }
+                }
+            }
+        ]).toArray();
+        res.json(data)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const endpoint8 = async (req, res) => {
+    try {
+        const data = await alquileres.aggregate([
+            {
+                $match: {
+                    "_id": new ObjectId(req.params.id)
+                }
+            },
+            {
+                $project: {
+                    "fechaInicio": 1,
+                    "fechaFinal": 1,
+                    "precioTotal": 1
+                }
+            }
+        ]).toArray();
+        console.log(req.params.id);
+        res.json(data)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const endpoint9 = async (req, res) => {
+    try {
+        const query = { dni: Number(req.params.dni) }
+        const data = await clientes.find(query).toArray();
+        res.json(data)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const endpoint10 = async (req, res) => {
+    try {
+        const query = { capacidad: { $gt: 5 } }
+        const data = await automoviles.find(query).toArray();
+        res.json(data)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const endpoint11 = async (req, res) => {
+    try {
+        const query = { fechaInicio: new Date("2023-07-05").toISOString() }
+        console.log(query);
+        const data = await alquileres.find(query).toArray();
+        res.json(data)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const endpoint12 = async (req, res) => {
+    try {
+        const data = await alquileres.aggregate([
+            {
+                $lookup: {
+                    from: "clientes",
+                    localField: "cliente",
+                    foreignField: "_id",
+                    as: "cliente"
+                }
+            },
+            {
+                $unwind: "$cliente"
+            },
+            {
+                $match: {
+                    "estado": /pendiente/i,
+                    "cliente._id": new ObjectId(req.params.id)
+                }
+            },
+            {
+                $group: {
+                    "_id": new ObjectId,
+                    "cantidadReservas": { $sum: 1 },
+                    "reservas": {
+                        $push: {
+                            "fechaInicio": "$fechaInicio",
+                            "fechaFinal": "$fechaFinal",
+                            "precioTotal": "$precioTotal",
+                            "estado": "$estado",
+                            "nombreCliente": "$cliente.nombre",
+                            "celularCliente": "$cliente.celular",
+                            "emailCLiente": "$cliente.email",
+                        }
+                    }
+                }
+            },
+        ]).toArray();
+        res.json(data);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const endpoint13 = async (req, res) => {
+    try {
+        const query = { $or: [ {cargo: /gerente/i}, {cargo: /asistente/i} ] }
+        const data = await empleados.find(query).toArray();
+        res.json(data);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const endpoint14 = async (req,res) =>{
+    try {
+        const data = await alquileres.aggregate([
+            {
+                $lookup: {
+                    from: "clientes",
+                    localField: "cliente",
+                    foreignField: "_id",
+                    as: "cliente"
+                }
+            },
+            {
+                $unwind: "$cliente"
+            },
+            {
+                $group: {
+                    "_id": new ObjectId,
+                    "cantidadReservas": { $sum: 1 },
+                    "reservas": {
+                        $push: {
+                            "fechaInicio": "$fechaInicio",
+                            "fechaFinal": "$fechaFinal",
+                            "precioTotal": "$precioTotal",
+                            "estado": "$estado",
+                            "nombreCliente": "$cliente.nombre",
+                            "celularCliente": "$cliente.celular",
+                            "emailCLiente": "$cliente.email",
+                        }
+                    }
+                }
+            },
+            {
+                $match:{
+                    "cantidadReservas": {$lt: 0} 
+                }
+            }
+        ]).toArray();
+        if (data.length === 0) {
+            res.json(data);
+        }else{
+            res.send('No se encontraron gente que no haya reservado');
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export { endpoint1, endpoint2, endpoint3, endpoint4, endpoint5, endpoint6, endpoint7, endpoint8, endpoint9, endpoint10, endpoint11, endpoint12, endpoint13, endpoint14}
