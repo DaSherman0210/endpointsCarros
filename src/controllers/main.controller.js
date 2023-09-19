@@ -326,4 +326,93 @@ const endpoint14 = async (req,res) =>{
     }
 }
 
-export { endpoint1, endpoint2, endpoint3, endpoint4, endpoint5, endpoint6, endpoint7, endpoint8, endpoint9, endpoint10, endpoint11, endpoint12, endpoint13, endpoint14}
+const endpoint15 = async (req,res) =>{
+    try {
+        const data = await automoviles.find().sort({"marca":1 ,"modelo":1}).toArray();
+        res.json(data);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const endpoint16 = async (req,res) =>{
+    try {
+        const data = await sucursal.aggregate([
+            {
+                $lookup: {
+                    from: "automoviles",
+                    localField: "autosDisponibles",
+                    foreignField: "_id",
+                    as: "carros"
+                }
+            },
+            {
+                $project: {
+                    "_id": 0,
+                    "direccion": 1,
+                    "totalCarro": { $size: "$carros" }
+                }
+            }
+        ]).toArray();
+        res.json(data)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const endpoint17 = async (req,res) =>{
+    try {
+        const data = await alquileres.find().toArray();
+        res.json(data)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const endpoint18 = async (req,res) =>{
+    try {
+        const data = await automoviles.aggregate([
+            {
+                $match:{
+                    "capacidad": 5,
+                    "activo": false
+                }
+            }
+        ]).toArray();
+        res.json(data)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const endpoint19 = async (req,res) =>{
+    try {
+        const data = await alquileres.aggregate([
+            {
+                $lookup: {
+                    from: "clientes",
+                    localField: "cliente",
+                    foreignField: "_id",
+                    as: "clientes"
+                  }
+            },
+            {
+                $project:{
+                    "fechaInicio": 1,
+                    "fechaFinal": 1,
+                    "precioTotal": 1,
+                    "cliente.nombre": 1,
+                    "cliente.dni": 1,
+                    "cliente.celular": 1,
+                    "cliente.email": 1,
+                    "cliente.direccion": 1
+                }
+            }
+        ]).toArray();
+        res.json(data);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export { endpoint1, endpoint2, endpoint3, endpoint4, endpoint5, endpoint6, endpoint7, endpoint8, endpoint9, endpoint10, endpoint11, endpoint12, endpoint13, endpoint14, endpoint15, endpoint16, endpoint17, endpoint18}
