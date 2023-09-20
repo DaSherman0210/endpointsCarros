@@ -7,12 +7,12 @@ const app = express();
 
 dotenv.config();
 
+app.use(express.json());
+
 app.use("/", router);
 app.use("/auth", routerAuth);
 
 const port = process.env.PORT8327;
-
-app.use(express.json());
 
 app.listen(port, ()=>{
     console.log(`El server esta corriendo en el puerto ${port}`);

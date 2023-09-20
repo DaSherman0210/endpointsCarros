@@ -30,6 +30,7 @@ import {
    getSucursal, getOneSucursal, postSucursal, deleteSucursal, updateSucursal
 
 } from "../controllers/main.controller.js";
+import validateJWT from "../middlewares/validate.jwt.js";
 
 const router = express.Router();
 
@@ -76,6 +77,7 @@ router.get("/getOneSucursal/:id",getOneSucursal);
 //* POSTS
 
 router.post("/postAlquiler", [
+   validateJWT,
    check("fechaInicio","La fecha de Inicio no es valida").notEmpty().isDate(),
    check("fechaFinal", "La fecha final no es valida").notEmpty().isDate(),
    check("cantidadDias", "La cantidad de dias no es valida").notEmpty().isNumeric(),
@@ -111,14 +113,14 @@ router.post("/postCliente",[
    validateDocuments
 ],postClientes);
 router.post("/postEmpleados",[
-   check("nombre","El nombre ingresado no es valido"),
-   check("dni","El dni ingresado no es valido"),
-   check("email","El email ingresado no es valido"),
-   check("password", "La contraseña ingresada no es valida (tiene que ser mayor a 6 digitos)"),
-   check("cargo","El cargo ingresado no es valido"),
-   check("activo","El valor dado en el activo es invalido"),
-   check("sucursal","La sucursal no es valida"),
-   check("fechaContratacion","La fecha de cotratacion no es valida"),
+   check("nombre","El nombre ingresado no es valido").notEmpty().isString(),
+   check("dni","El dni ingresado no es valido").notEmpty().isNumeric(),
+   check("email","El email ingresado no es valido").notEmpty().isEmail(),
+   check("password", "La contraseña ingresada no es valida (tiene que ser mayor a 6 digitos)").notEmpty().isLength({min: 6}),
+   check("cargo","El cargo ingresado no es valido").notEmpty().isIn(["Vendedor", "Gerente" , "Recepcionista"]),
+   check("activo","El valor dado en el activo es invalido").notEmpty().isBoolean(),
+   check("sucursal","La sucursal mongoId no es valida").notEmpty().isMongoId(),
+   check("fechaContratacion","La fecha de cotratacion no es valida").notEmpty(),
    validateDocuments
 ],postEmpleados);
 router.post("/postSucursal",[

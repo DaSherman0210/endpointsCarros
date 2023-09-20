@@ -42,7 +42,9 @@ const login = async (req,res = response)=>{
       }
 
       const token = await generateJWT(empleado.id);
-      res.json(empleado,token);
+      console.log(token);
+      console.log(empleado);
+      res.json({empleado,token});
 
    } catch (error) {
       console.log(error);

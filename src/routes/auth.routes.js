@@ -6,8 +6,8 @@ import login from "../controllers/auth.controllers.js";
 const router = express.Router();
 
 router.post("/login",[
-   check("email", "El email es obligatorio").isEmpty().isEmail(),
-   check("password", "El password es obligatorio").isEmpty().isEmail(),
+   check("email", "El email es obligatorio").isEmail(),
+   check("password", "El password es obligatorio").isString(),
    validateDocuments
 ],login)
 

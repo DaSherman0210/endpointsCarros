@@ -370,22 +370,24 @@ const getOneEmpleados = async (req, res) => {
 
 const postEmpleados = async (req, res) => {
     try {
-        const { nombre, dni, email, password, cargo, activo, sucursal, fechaContratacion } = req.body;
-        const data = new empleados({ nombre, dni, email, password, cargo, activo, sucursal, fechaContratacion })
+        
 
+        const emailExiste = await empleados.findOne({email: req.body.email})
 
-        const existeEmpleado = await empleados.findOne({ email });
-        if (existeEmpleado) {
-            return res.status(404).json({
-                msg: "Ya esta registrado en la base de datos"
+        if (emailExiste) {
+            res.status(404).json({
+                msg: "No se admiten correos duplicados"
             })
-        }
+        }else{
+            const data = await empleados.insertOne(req.body);
 
-        const nuevaData = await data.save();
         res.json({
             msg: "Agregado un empleado con exito",
-            nuevaData
+            data
         })
+        }
+
+        
     } catch (error) {
         console.log(error);
     }
