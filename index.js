@@ -1,12 +1,14 @@
 import dotenv from "dotenv";
 import express from "express";
 import router from "./src/routes/main.routes.js"
+import routerAuth from "./src/routes/auth.routes.js";
 
 const app = express();
 
 dotenv.config();
 
 app.use("/", router);
+app.use("/auth", routerAuth);
 
 const port = process.env.PORT8327;
 
