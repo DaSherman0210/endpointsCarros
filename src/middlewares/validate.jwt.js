@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
-import Jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { MongoClient } from "mongodb";
-import { response, request } from "express";
+
 
 dotenv.config();
 
@@ -32,9 +32,9 @@ const validateJWT = async (req, res, next) => {
    console.log(token);
 
    try {
-      const { uid } = Jwt.verify(token, process.env.JWT_PRIVATE_KEY);
-      console.log("Contenido del token JWT:", Jwt.decode(token));
-      const empleado = await empleados.findOne({ _id: uid });
+      const { uid } = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
+      console.log("Contenido del token JWT:", jwt.decode(token));
+      const empleado = await empleados.findOne({_id: uid});
 
       if (!empleado) {
          return res.status(401).json({

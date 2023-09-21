@@ -35,7 +35,7 @@ const login = async (req,res = response)=>{
          })
       }
 
-      if (!empleado.password === password) {
+      if (empleado.password !== password) {
          return res.status(404).json({
             msg: "La contraseña es incorrecta"
          })
@@ -43,7 +43,6 @@ const login = async (req,res = response)=>{
 
       const token = await generateJWT(empleado.id);
       console.log(token);
-      console.log(empleado);
       res.json({empleado,token});
 
    } catch (error) {
