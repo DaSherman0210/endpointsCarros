@@ -30,7 +30,6 @@ import {
    getSucursal, getOneSucursal, postSucursal, deleteSucursal, updateSucursal
 
 } from "../controllers/main.controller.js";
-import validateJWT from "../middlewares/validate.jwt.js";
 
 const router = express.Router();
 
@@ -77,7 +76,6 @@ router.get("/getOneSucursal/:id",getOneSucursal);
 //* POSTS
 
 router.post("/postAlquiler", [
-   validateJWT,
    check("fechaInicio","La fecha de Inicio no es valida").notEmpty().isDate(),
    check("fechaFinal", "La fecha final no es valida").notEmpty().isDate(),
    check("cantidadDias", "La cantidad de dias no es valida").notEmpty().isNumeric(),
