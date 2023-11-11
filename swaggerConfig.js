@@ -14,3 +14,7 @@ const options = {
         './src/routes/mn.routes.js'
     ]
 }
+
+const swaggerSpec = swaggerJSDoc(options);
+
+export default swaggerSpec;
