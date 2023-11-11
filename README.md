@@ -10,12 +10,35 @@ Development project for a RESTful API with 20 endpoints for data management acro
 
 <img src="./imgs/image.png" width="600px">
 
-## Start the project
+## 📚 Start the project
 
-Inicializar el proyecto
+If you want to try the endpoints from this repository you have to do this next step:
 
-First, you must add the .env file to the backend folder, copy the structure from the .env.example file, and replace the data with the following (Replace "password" with a key that will be provided to the instructor externally):
+First, you must add the .env file, copy the structure from the .env.example file, and replace the data with the following (Replace "password" with a key that will be provided to the instructor externally):
 
-PORT8327= 7778
-MONGO_URI8326= mongodb+srv://campus:password@kariocluster.x7ikp2c.mongodb.net/
-JWT_PRIVATE_KEY = private_key
+* PORT8327= 7778
+* MONGO_URI8326= mongodb+srv://campus:password@kariocluster.x7ikp2c.mongodb.net/
+* JWT_PRIVATE_KEY = private_key
+
+After that initialize a terminal in vscode and you have to put this:
+
+```bash
+npm i
+```
+
+```bash
+npm start
+```
+
+## 📖 Swagger Documentation
+
+After you have initialized the project, if you want to know how to use the endpoints use the next URL where you can find all about the API documentation:
+
+```bash
+http://localhost:PORT/documentation
+```
+
+After you open the link you are going to see something like this:
+
+
+
