@@ -40,5 +40,5 @@ http://localhost:PORT/documentation
 
 After you open the link you are going to see something like this:
 
-
+<img src="./imgs/swaggerImage.png" alt="swagger-image" width="900px">
 
