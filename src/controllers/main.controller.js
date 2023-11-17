@@ -50,7 +50,7 @@ const getAlquileres = async (req, res) => {
 
 const getOneAlquileres = async (req, res) => {
     try {
-        const data = await alquileres.findOne({ _id: req.params.id });
+        const data = await alquileres.findOne({ _id: new ObjectId(req.params.id) });
         res.json({
             msg: "Buscar un alquiler",
             data
@@ -81,7 +81,7 @@ const postAlquileres = async (req, res) => {
 
 const deleteAlquileres = async (req, res) => {
     try {
-        const data = await alquileres.deleteOne({ _id: req.params.id });
+        const data = await alquileres.deleteOne({ _id: new ObjectId(req.params.id) });
         res.json({
             msg: "se borró con exito un alquiler",
             data
@@ -95,7 +95,7 @@ const deleteAlquileres = async (req, res) => {
 
 const updateAlquileres = async (req, res) => {
     try {
-        const data = await alquileres.findOne({ _id: req.params.id });
+        const data = await alquileres.findOne({ _id: new ObjectId(req.params.id) });
         if (req.body.fechaInicio) {
             data.fechaInicio = req.body.fechaInicio;
         }
@@ -156,7 +156,7 @@ const getAutomoviles = async (req, res) => {
 
 const getOneAutomoviles = async (req, res) => {
     try {
-        const data = await automoviles.findOne({ _id: req.params.id });
+        const data = await automoviles.findOne({ _id: new ObjectId(req.params.id) });
         res.json({
             msg: "Buscar un automovil",
             data
@@ -187,7 +187,7 @@ const postAutomoviles = async (req, res) => {
 
 const deleteAutomoviles = async (req, res) => {
     try {
-        const data = await automoviles.deleteOne({ _id: req.params.id });
+        const data = await automoviles.deleteOne({ _id: new ObjectId(req.params.id) });
         res.json({
             msg: "se borró con exito un automovil",
             data
@@ -201,7 +201,7 @@ const deleteAutomoviles = async (req, res) => {
 
 const updateAutomoviles = async (req, res) => {
     try {
-        const data = await automoviles.findOne({ _id: req.params.id });
+        const data = await automoviles.findOne({ _id: new ObjectId(req.params.id) });
         if (req.body.modelo) {
             data.modelo = req.body.modelo;
         }
@@ -259,7 +259,7 @@ const getClientes = async (req, res) => {
 
 const getOneClientes = async (req, res) => {
     try {
-        const data = await clientes.findOne({ _id: req.params.id });
+        const data = await clientes.findOne({ _id: new ObjectId(req.params.id) });
         res.json({
             msg: "Buscar un cliente",
             data
@@ -290,7 +290,7 @@ const postClientes = async (req, res) => {
 
 const deleteClientes = async (req, res) => {
     try {
-        const data = await clientes.deleteOne({ _id: req.params.id });
+        const data = await clientes.deleteOne({ _id: new ObjectId(req.params.id) });
         res.json({
             msg: "se borró con exito un cliente",
             data
@@ -304,7 +304,7 @@ const deleteClientes = async (req, res) => {
 
 const updateClientes = async (req, res) => {
     try {
-        const data = await clientes.findOne({ _id: req.params.id });
+        const data = await clientes.findOne({ _id: new ObjectId(req.params.id) });
         if (req.body.nombre) {
             data.nombre = req.body.nombre;
         }
@@ -356,7 +356,7 @@ const getEmpleados = async (req, res) => {
 
 const getOneEmpleados = async (req, res) => {
     try {
-        const data = await empleados.findOne({ _id: req.params.id });
+        const data = await empleados.findOne({ _id: new ObjectId(req.params.id) });
         res.json({
             msg: "Buscar un empleado",
             data
@@ -397,7 +397,7 @@ const postEmpleados = async (req, res) => {
 
 const deleteEmpleados = async (req, res) => {
     try {
-        const data = await empleados.deleteOne({ _id: req.params.id });
+        const data = await empleados.deleteOne({ _id: new ObjectId(req.params.id) });
         res.json({
             msg: "se borró con empleado un alquiler",
             data
@@ -411,7 +411,7 @@ const deleteEmpleados = async (req, res) => {
 
 const updateEmpleados = async (req, res) => {
     try {
-        const data = await empleados.findOne({ _id: req.params.id });
+        const data = await empleados.findOne({ _id: new ObjectId(req.params.id) });
         if (req.body.nombre) {
             data.nombre = req.body.nombre;
         }
@@ -466,7 +466,7 @@ const getSucursal = async (req, res) => {
 
 const getOneSucursal = async (req, res) => {
     try {
-        const data = await sucursal.findOne({ _id: req.params.id });
+        const data = await sucursal.findOne({ _id: new ObjectId(req.params.id) });
         res.json({
             msg: "Buscar un sucursal",
             data
@@ -497,7 +497,7 @@ const postSucursal = async (req, res) => {
 
 const deleteSucursal = async (req, res) => {
     try {
-        const data = await sucursal.deleteOne({ _id: req.params.id });
+        const data = await sucursal.deleteOne({ _id: new ObjectId(req.params.id) });
         res.json({
             msg: "se borró con exito una sucursal",
             data
@@ -511,7 +511,7 @@ const deleteSucursal = async (req, res) => {
 
 const updateSucursal = async (req, res) => {
     try {
-        const data = await sucursal.findOne({ _id: req.params.id });
+        const data = await sucursal.findOne({ _id: new ObjectId(req.params.id) });
         if (req.body.ciudad) {
             data.ciudad = req.body.ciudad;
         }
@@ -655,7 +655,7 @@ const endpoint4 = async (req, res) => {
 
 const endpoint5 = async (req, res) => {
     try {
-        const query = { _id: new ObjectId(req.params.id) }
+        const query = { _id: new ObjectId(new ObjectId(req.params.id)) }
         const data = await alquileres.findOne(query);
         res.json(data)
     } catch (error) {
