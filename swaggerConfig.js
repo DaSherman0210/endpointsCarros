@@ -11,7 +11,7 @@ const options = {
     },
     apis:[
         './src/routes/auth.routes.js',
-        './src/routes/mn.routes.js'
+        './src/routes/main.routes.js'
     ]
 }
 
